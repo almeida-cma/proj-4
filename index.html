@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEMA 04 - Multimídia para Web: Vídeo e Podcast</title>
+    
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ===== VARIÁVEIS E RESET ===== */
+        :root {
+            --cor-primaria: #2c3e50;
+            --cor-secundaria: #3498db;
+            --cor-destaque: #e74c3c;
+            --cor-sucesso: #27ae60;
+            --cor-canva: #00c4cc;
+            --cor-youtube: #ff0000;
+            --cor-texto: #333;
+            --cor-fundo: #f9f9f9;
+            --cor-cinza-claro: #ecf0f1;
+            --sombra-suave: 0 5px 15px rgba(0,0,0,0.08);
+            --borda-arredondada: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ===== CABEÇALHO ===== */
+        .cabecalho {
+            background: linear-gradient(90deg, #0f3460, #1a5f7a);
+            color: white;
+            padding: 40px;
+            border-radius: var(--borda-arredondada);
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: var(--sombra-suave);
+            position: relative;
+            overflow: hidden;
+            border-bottom: 4px solid var(--cor-destaque);
+        }
+
+        .cabecalho::before {
+            content: "🎬";
+            position: absolute;
+            bottom: -30px;
+            right: -30px;
+            font-size: 150px;
+            opacity: 0.1;
+            transform: rotate(10deg);
+        }
+
+        .logo-aula {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitulo {
+            font-size: 1.4rem;
+            opacity: 0.95;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .badge-aula {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 25px;
+            border-radius: 30px;
+            display: inline-block;
+            font-size: 1rem;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* ===== NAVEGAÇÃO ENTRE TEMAS ===== */
+        .navegacao-temas {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .btn-tema {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.2);
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-tema:hover {
+            background: var(--cor-secundaria);
+            border-color: var(--cor-secundaria);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(52,152,219,0.4);
+        }
+
+        .btn-tema.ativo {
+            background: var(--cor-destaque);
+            border-color: var(--cor-destaque);
+        }
+
+        /* ===== SEÇÕES ===== */
+        .conteudo-principal {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .secao {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--borda-arredondada);
+            padding: 30px;
+            box-shadow: var(--sombra-suave);
+            transition: transform 0.3s;
+        }
+
+        .secao:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .secao-destaque {
+            background: linear-gradient(135deg, rgba(231,76,60,0.1), rgba(192,57,43,0.1));
+            border-left: 5px solid var(--cor-destaque);
+        }
+
+        .secao-canva {
+            background: linear-gradient(135deg, rgba(0,196,204,0.1), rgba(0,150,150,0.1));
+            border-left: 5px solid var(--cor-canva);
+        }
+
+        .secao-youtube {
+            background: linear-gradient(135deg, rgba(255,0,0,0.1), rgba(200,0,0,0.1));
+            border-left: 5px solid var(--cor-youtube);
+        }
+
+        .titulo-secao {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .icone-secao {
+            font-size: 2.2rem;
+            width: 70px;
+            height: 70px;
+            background: var(--cor-secundaria);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 5px 15px rgba(52,152,219,0.3);
+        }
+
+        .secao-destaque .icone-secao {
+            background: var(--cor-destaque);
+            box-shadow: 0 5px 15px rgba(231,76,60,0.3);
+        }
+
+        .secao-canva .icone-secao {
+            background: var(--cor-canva);
+            box-shadow: 0 5px 15px rgba(0,196,204,0.3);
+        }
+
+        .secao-youtube .icone-secao {
+            background: var(--cor-youtube);
+            box-shadow: 0 5px 15px rgba(255,0,0,0.3);
+        }
+
+        /* ===== TIMELINE VISUAL ===== */
+        .timeline-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 40px 0;
+            position: relative;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--cor-destaque), var(--cor-secundaria), var(--cor-canva), var(--cor-youtube));
+            z-index: 1;
+        }
+
+        .timeline-item {
+            background: rgba(0,0,0,0.5);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            flex: 1;
+            min-width: 100px;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s;
+        }
+
+        .timeline-item:hover {
+            transform: scale(1.05);
+            border-color: var(--cor-destaque);
+        }
+
+        .timeline-numero {
+            width: 40px;
+            height: 40px;
+            background: var(--cor-destaque);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 auto 10px;
+            font-size: 1.2rem;
+        }
+
+        .timeline-item:nth-child(2) .timeline-numero { background: var(--cor-secundaria); }
+        .timeline-item:nth-child(3) .timeline-numero { background: var(--cor-canva); }
+        .timeline-item:nth-child(4) .timeline-numero { background: var(--cor-youtube); }
+        .timeline-item:nth-child(5) .timeline-numero { background: #9b59b6; }
+        .timeline-item:nth-child(6) .timeline-numero { background: #f39c12; }
+        .timeline-item:nth-child(7) .timeline-numero { background: #2ecc71; }
+
+        /* ===== CARDS DE PASSO A PASSO ===== */
+        .passos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .passo-card {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+
+        .passo-card:hover {
+            background: rgba(0,0,0,0.5);
+            border-color: var(--cor-secundaria);
+            transform: translateY(-5px);
+        }
+
+        .passo-titulo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: var(--cor-secundaria);
+            font-size: 1.3rem;
+        }
+
+        .termos-busca {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .termo-tag {
+            background: rgba(52,152,219,0.2);
+            border: 1px solid var(--cor-secundaria);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #fff;
+        }
+
+        .termo-tag i {
+            color: var(--cor-secundaria);
+            margin-right: 5px;
+        }
+
+        /* ===== ROTEIRO VISUAL ===== */
+        .roteiro-tabela {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .roteiro-tabela th {
+            background: var(--cor-primaria);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .roteiro-tabela td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .roteiro-tabela tr:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .cena-tempo {
+            background: var(--cor-destaque);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        /* ===== SIMULADOR DE TIMELINE CANVA ===== */
+        .simulador-canva {
+            background: #1e1e2f;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 30px 0;
+            border: 2px solid var(--cor-canva);
+        }
+
+        .simulador-header {
+            background: #0a0a1a;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid #333;
+        }
+
+        .simulador-header i {
+            color: var(--cor-canva);
+            font-size: 1.5rem;
+        }
+
+        .simulador-header span {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .simulador-header .url {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-left: auto;
+        }
+
+        .simulador-timeline {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .track-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .track-clips {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .clip {
+            background: var(--cor-secundaria);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        .clip:nth-child(2) { background: var(--cor-destaque); animation-delay: 0.5s; }
+        .clip:nth-child(3) { background: var(--cor-canva); animation-delay: 1s; }
+        .clip:nth-child(4) { background: var(--cor-youtube); animation-delay: 1.5s; }
+        .clip:nth-child(5) { background: #9b59b6; animation-delay: 2s; }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        /* ===== YOUTUBE SIMULADOR ===== */
+        .youtube-config {
+            background: #0f0f0f;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 2px solid var(--cor-youtube);
+        }
+
+        .config-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+        }
+
+        .config-label {
+            min-width: 150px;
+            color: #aaa;
+        }
+
+        .config-value {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .config-badge {
+            background: var(--cor-youtube);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .config-radio-group {
+            display: flex;
+            gap: 20px;
+        }
+
+        .config-radio {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+        }
+
+        /* ===== BOTÕES ===== */
+        .btn-interativo {
+            background: var(--cor-secundaria);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            font-size: 1rem;
+            margin: 5px;
+            box-shadow: 0 5px 15px rgba(52,152,219,0.3);
+        }
+
+        .btn-interativo:hover {
+            background: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(52,152,219,0.4);
+        }
+
+        .btn-canva {
+            background: var(--cor-canva);
+            box-shadow: 0 5px 15px rgba(0,196,204,0.3);
+        }
+
+        .btn-canva:hover {
+            background: #00a0a8;
+        }
+
+        .btn-youtube {
+            background: var(--cor-youtube);
+            box-shadow: 0 5px 15px rgba(255,0,0,0.3);
+        }
+
+        .btn-youtube:hover {
+            background: #cc0000;
+        }
+
+        /* ===== CHECKLIST ===== */
+        .checklist-container {
+            background: rgba(39,174,96,0.1);
+            border: 2px solid var(--cor-sucesso);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .item-checklist {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+
+        .item-checklist input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--cor-sucesso);
+        }
+
+        .progresso-aula {
+            height: 12px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 20px 0 10px;
+        }
+
+        .barra-progresso {
+            height: 100%;
+            background: var(--cor-sucesso);
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        /* ===== RESPONSIVIDADE ===== */
+        @media (max-width: 768px) {
+            .timeline-container {
+                flex-direction: column;
+            }
+            
+            .timeline-container::before {
+                display: none;
+            }
+            
+            .config-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .config-radio-group {
+                flex-wrap: wrap;
+            }
+            
+            .logo-aula {
+                font-size: 2rem;
+            }
+            
+            .passos-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABEÇALHO PRINCIPAL -->
+        <header class="cabecalho">
+            <div class="logo-aula">
+                <i class="fas fa-video"></i> TEMA 04
+            </div>
+            <p class="subtitulo">Multimídia para Web: Vídeo e Podcast</p>
+            <span class="badge-aula">
+                <i class="fas fa-film"></i> Produção de Web Jornal com Canva | Mobilidade Urbana
+            </span>
+        </header>
+
+        <!-- NAVEGAÇÃO ENTRE TEMAS -->
+        <nav class="navegacao-temas">
+            <a href="index.html" class="btn-tema">
+                <i class="fas fa-home"></i> Sumário
+            </a>
+            <a href="https://almeida-cma.github.io/proj-1/" class="btn-tema">
+                <i class="fas fa-project-diagram"></i> TEMA 01
+            </a>
+            <a href="https://almeida-cma.github.io/proj-2/" class="btn-tema">
+                <i class="fas fa-cloud-upload-alt"></i> TEMA 02
+            </a>
+            <a href="https://almeida-cma.github.io/proj-3/" class="btn-tema">
+                <i class="fas fa-palette"></i> TEMA 03
+            </a>
+            <a href="#" class="btn-tema ativo">
+                <i class="fas fa-video"></i> TEMA 04
+            </a>
+        </nav>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="conteudo-principal">
+
+            <!-- SEÇÃO 1: INTRODUÇÃO E TIMELINE -->
+            <section class="secao">
+                <div class="titulo-secao">
+                    <div class="icone-secao">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div>
+                        <h2>🎯 Estrutura do Web Jornal (1min30 - 2min30)</h2>
+                        <p style="color: #aaa; margin-top: 5px;">Cada bloco tem função específica na narrativa</p>
+                    </div>
+                </div>
+
+                <div class="timeline-container">
+                    <div class="timeline-item">
+                        <div class="timeline-numero">1</div>
+                        <i class="fas fa-film" style="font-size: 1.5rem; margin-bottom: 10px; color: var(--cor-destaque);"></i>
+                        <h4>Vinheta</h4>
+                        <p style="font-size: 0.9rem; opacity: 0.8;">5-7s</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-numero">2</div>
+                        <i class="fas fa-microphone" style="font-size: 1.5rem; margin-bottom: 10px; color: var(--cor-secundaria);"></i>
+                        <h4>Abertura</h4>
+                        <p style="font-size: 0.9rem; opacity: 0.8;">10-15s</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-numero">3</div>
+                        <i class="fas fa-image" style="font-size: 1.5rem; margin-bottom: 10px; color: var(--cor-canva);"></i>
+                        <h4>B-Roll</h4>
+                        <p style="font-size: 0.9rem; opacity: 0.8;">30-45s</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-numero">4</div>
+                        <i class="fas fa-chart-bar" style="font-size: 1.5rem; margin-bottom: 10px; color: var(--cor-youtube);"></i>
+                        <h4>Dados</h4>
+                        <p style="font-size: 0.9rem; opacity: 0.8;">15-20s</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-numero">5</div>
+                        <i class="fas fa-music" style="font-size: 1.5rem; margin-bottom: 10px; color: #9b59b6;"></i>
+                        <h4>Trilha</h4>
+                        <p style="font-size: 0.9rem; opacity: 0.8;">Contínua</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-numero">6</div>
+                        <i class="fas fa-check-circle" style="font-size: 1.5rem; margin-bottom: 10px; color: #f39c12;"></i>
+                        <h4>Encerramento</h4>
+                        <p style="font-size: 0.9rem; opacity: 0.8;">10-15s</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SEÇÃO 2: PASSO A PASSO CANVA -->
+            <section class="secao secao-canva">
+                <div class="titulo-secao">
+                    <div class="icone-secao">
+                        <i class="fab fa-canva"></i>
+                    </div>
+                    <div>
+                        <h2>🎬 PASSO 1: Criar Projeto no Canva</h2>
+                        <p style="color: #aaa; margin-top: 5px;">Configurações iniciais e organização</p>
+                    </div>
+                </div>
+
+                <div class="simulador-canva">
+                    <div class="simulador-header">
+                        <i class="fab fa-canva"></i>
+                        <span>canva.com</span>
+                        <span class="url">/design/novo?tipo=video</span>
+                    </div>
+                    <div style="padding: 20px; background: #2a2a3a; display: flex; gap: 20px; flex-wrap: wrap;">
+                        <div style="background: #3a3a4a; padding: 15px; border-radius: 8px; flex: 1; min-width: 200px;">
+                            <i class="fas fa-cog" style="color: var(--cor-canva);"></i>
+                            <h4 style="margin: 10px 0;">Criar design</h4>
+                            <p style="font-size: 0.9rem;">Vídeo → 1920x1080</p>
+                        </div>
+                        <div style="background: #3a3a4a; padding: 15px; border-radius: 8px; flex: 1; min-width: 200px;">
+                            <i class="fas fa-tag" style="color: var(--cor-canva);"></i>
+                            <h4 style="margin: 10px 0;">Nomear projeto</h4>
+                            <p style="font-size: 0.9rem;">"Web Jornal - Mobilidade Urbana"</p>
+                        </div>
+                        <div style="background: #3a3a4a; padding: 15px; border-radius: 8px; flex: 1; min-width: 200px;">
+                            <i class="fas fa-clock" style="color: var(--cor-canva);"></i>
+                            <h4 style="margin: 10px 0;">Timeline</h4>
+                            <p style="font-size: 0.9rem;">Organizar por camadas</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="passos-grid">
+                    <div class="passo-card">
+                        <div class="passo-titulo">
+                            <i class="fas fa-1-circle"></i>
+                            <h3>Vinheta (5-7s)</h3>
+                        </div>
+                        <p><strong>Buscar vídeos:</strong></p>
+                        <div class="termos-busca">
+                            <span class="termo-tag"><i class="fas fa-search"></i> news intro</span>
+                            <span class="termo-tag"><i class="fas fa-search"></i> breaking news background</span>
+                            <span class="termo-tag"><i class="fas fa-search"></i> abstract newsroom</span>
+                        </div>
+                        <p><strong>Buscar áudio:</strong></p>
+                        <div class="termos-busca">
+                            <span class="termo-tag"><i class="fas fa-music"></i> news intro music</span>
+                            <span class="termo-tag"><i class="fas fa-music"></i> corporate news</span>
+                        </div>
+                        <p><strong>Texto:</strong> "WEB JORNAL ACADÊMICO"</p>
+                        <p><strong>Volume trilha:</strong> 40%</p>
+                    </div>
+
+                    <div class="passo-card">
+                        <div class="passo-titulo">
+                            <i class="fas fa-2-circle"></i>
+                            <h3>Abertura (10-15s)</h3>
+                        </div>
+                        <p><strong>Buscar vídeos:</strong></p>
+                        <div class="termos-busca">
+                            <span class="termo-tag"><i class="fas fa-search"></i> news presenter studio</span>
+                            <span class="termo-tag"><i class="fas fa-search"></i> person speaking camera</span>
+                            <span class="termo-tag"><i class="fas fa-search"></i> anchor desk</span>
+                        </div>
+                        <p><strong>Roteiro narração:</strong></p>
+                        <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px; font-style: italic;">
+                            "O transporte público é um dos principais desafios das grandes cidades brasileiras. Nesta edição, vamos entender os problemas e possíveis soluções para a mobilidade urbana no país."
+                        </div>
+                    </div>
+
+                    <div class="passo-card">
+                        <div class="passo-titulo">
+                            <i class="fas fa-3-circle"></i>
+                            <h3>B-Roll (30-45s)</h3>
+                        </div>
+                        <p><strong>Buscar vídeos (4-6s cada):</strong></p>
+                        <div class="termos-busca" style="flex-wrap: wrap;">
+                            <span class="termo-tag">city traffic</span>
+                            <span class="termo-tag">bus stop</span>
+                            <span class="termo-tag">urban mobility</span>
+                            <span class="termo-tag">crowded bus</span>
+                            <span class="termo-tag">subway station</span>
+                            <span class="termo-tag">bike lane</span>
+                            <span class="termo-tag">traffic jam</span>
+                            <span class="termo-tag">commuting people</span>
+                        </div>
+                        <p><strong>Transição:</strong> Dissolver (0.5s)</p>
+                    </div>
+
+                    <div class="passo-card">
+                        <div class="passo-titulo">
+                            <i class="fas fa-4-circle"></i>
+                            <h3>Dados (15-20s)</h3>
+                        </div>
+                        <p><strong>Buscar gráficos:</strong></p>
+                        <div class="termos-busca">
+                            <span class="termo-tag">bar chart</span>
+                            <span class="termo-tag">data visualization</span>
+                            <span class="termo-tag">infographic</span>
+                        </div>
+                        <p><strong>Dados ilustrativos:</strong></p>
+                        <ul style="list-style: none; padding: 0;">
+                            <li>📊 64% usam transporte público</li>
+                            <li>📊 78% consideram qualidade ruim</li>
+                            <li>📊 52% gastam +2h por dia</li>
+                        </ul>
+                    </div>
+
+                    <div class="passo-card">
+                        <div class="passo-titulo">
+                            <i class="fas fa-5-circle"></i>
+                            <h3>Trilha Sonora</h3>
+                        </div>
+                        <p><strong>Buscar áudios:</strong></p>
+                        <div class="termos-busca">
+                            <span class="termo-tag">corporate background</span>
+                            <span class="termo-tag">documentary light</span>
+                            <span class="termo-tag">news ambient</span>
+                        </div>
+                        <p><strong>Configurações:</strong></p>
+                        <p>🔊 Volume: 20-30%</p>
+                        <p>🎚️ Fade in / Fade out</p>
+                        <p>🎯 Neutra, não emocional</p>
+                    </div>
+
+                    <div class="passo-card">
+                        <div class="passo-titulo">
+                            <i class="fas fa-6-circle"></i>
+                            <h3>Encerramento</h3>
+                        </div>
+                        <p><strong>Buscar vídeos:</strong></p>
+                        <div class="termos-busca">
+                            <span class="termo-tag">city skyline sunset</span>
+                            <span class="termo-tag">news outro background</span>
+                            <span class="termo-tag">closing news</span>
+                        </div>
+                        <p><strong>Texto:</strong> "Esta foi uma produção do Projeto de Extensão em Web Jornal."</p>
+                        <p><strong>Fade out música</strong> nos últimos 3s</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SEÇÃO 3: ROTEIRO COMPLETO -->
+            <section class="secao secao-destaque">
+                <div class="titulo-secao">
+                    <div class="icone-secao">
+                        <i class="fas fa-scroll"></i>
+                    </div>
+                    <div>
+                        <h2>📋 ROTEIRO COMPLETO - MOBILIDADE URBANA</h2>
+                        <p style="color: #aaa; margin-top: 5px;">Duração estimada: 1min40s</p>
+                    </div>
+                </div>
+
+                <table class="roteiro-tabela">
+                    <thead>
+                        <tr>
+                            <th>Tempo</th>
+                            <th>Cena</th>
+                            <th>Elemento Visual</th>
+                            <th>Áudio/Narração</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="cena-tempo">0:00-0:07</span></td>
+                            <td>Vinheta</td>
+                            <td>Fundo "news intro"</td>
+                            <td>Trilha news intro</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cena-tempo">0:07-0:22</span></td>
+                            <td>Abertura</td>
+                            <td>Fundo estúdio</td>
+                            <td>"O transporte público é um dos principais desafios das grandes cidades brasileiras. Nesta edição, vamos entender os problemas e possíveis soluções para a mobilidade urbana no país."</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cena-tempo">0:22-0:47</span></td>
+                            <td>B-Roll</td>
+                            <td>Trânsito, ônibus, metrô (cortes rápidos)</td>
+                            <td>Trilha de fundo suave</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cena-tempo">0:47-0:57</span></td>
+                            <td>Contexto</td>
+                            <td>Pessoas em ponto de ônibus</td>
+                            <td>"Nas capitais brasileiras, o tempo médio de deslocamento casa-trabalho é de 90 minutos."</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cena-tempo">0:57-1:12</span></td>
+                            <td>Dados</td>
+                            <td>Gráfico animado</td>
+                            <td>"64% dos brasileiros usam transporte público diariamente, mas 78% consideram o serviço de qualidade regular ou ruim."</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cena-tempo">1:12-1:27</span></td>
+                            <td>Soluções</td>
+                            <td>Ciclovias, VLT, metrô</td>
+                            <td>"Especialistas apontam que investimento em corredores exclusivos e integração de modais são caminhos para melhorar a mobilidade."</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cena-tempo">1:27-1:37</span></td>
+                            <td>Encerramento</td>
+                            <td>Skyline cidade</td>
+                            <td>"Esta foi uma produção do Projeto de Extensão em Web Jornal."</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cena-tempo">1:37-1:40</span></td>
+                            <td>Fade out</td>
+                            <td>-</td>
+                            <td>Fade out trilha</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- SEÇÃO 4: PUBLICAÇÃO NO YOUTUBE -->
+            <section class="secao secao-youtube">
+                <div class="titulo-secao">
+                    <div class="icone-secao">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <div>
+                        <h2>📤 Publicar no YouTube (Não listado)</h2>
+                        <p style="color: #aaa; margin-top: 5px;">Configuração ideal para projeto acadêmico</p>
+                    </div>
+                </div>
+
+                <div class="youtube-config">
+                    <div class="config-item">
+                        <span class="config-label">📌 Título:</span>
+                        <span class="config-value">Web Jornal Acadêmico – Mobilidade Urbana</span>
+                    </div>
+                    <div class="config-item">
+                        <span class="config-label">📝 Descrição:</span>
+                        <span class="config-value">Produção audiovisual do Projeto de Extensão em Web Jornal. Vídeo criado com recursos da biblioteca do Canva para fins educacionais.</span>
+                    </div>
+                    <div class="config-item">
+                        <span class="config-label">🌐 Visibilidade:</span>
+                        <div class="config-radio-group">
+                            <label class="config-radio">
+                                <input type="radio" name="visibilidade" checked> 🔴 Não listado
+                            </label>
+                            <label class="config-radio">
+                                <input type="radio" name="visibilidade"> 🟢 Público
+                            </label>
+                            <label class="config-radio">
+                                <input type="radio" name="visibilidade"> 🔵 Privado
+                            </label>
+                        </div>
+                    </div>
+                    <div class="config-item">
+                        <span class="config-label">✅ Marcações obrigatórias:</span>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <span><i class="fas fa-check-circle" style="color: var(--cor-sucesso);"></i> Não é conteúdo para crianças</span>
+                            <span><i class="fas fa-check-circle" style="color: var(--cor-sucesso);"></i> Não quero restringir para maiores de 18 anos</span>
+                            <span><i class="fas fa-times-circle" style="color: var(--cor-destaque);"></i> Não é promoção paga</span>
+                            <span><i class="fas fa-check-circle" style="color: var(--cor-sucesso);"></i> Licença padrão do YouTube</span>
+                        </div>
+                    </div>
+                    <div class="config-item">
+                        <span class="config-label">⚠️ Direitos autorais:</span>
+                        <span class="config-badge">Não afeta seu canal</span>
+                        <span class="config-badge">Não restringe seu vídeo</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SEÇÃO 5: FERRAMENTAS COMPLEMENTARES -->
+            <section class="secao">
+                <div class="titulo-secao">
+                    <div class="icone-secao">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div>
+                        <h2>🛠️ Ferramentas Complementares</h2>
+                        <p style="color: #aaa; margin-top: 5px;">Recursos gratuitos para produção</p>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                    <div style="background: rgba(255,255,255,0.05); padding: 25px; border-radius: 10px; text-align: center;">
+                        <i class="fas fa-record-vinyl" style="font-size: 2.5rem; color: var(--cor-canva); margin-bottom: 10px;"></i>
+                        <h3>RecordCast</h3>
+                        <p style="color: #aaa; margin: 10px 0;">Gravação de tela + webcam + edição simples</p>
+                        <a href="https://www.recordcast.com" target="_blank" style="color: var(--cor-canva);">recordcast.com →</a>
+                    </div>
+                    
+                    <div style="background: rgba(255,255,255,0.05); padding: 25px; border-radius: 10px; text-align: center;">
+                        <i class="fas fa-robot" style="font-size: 2.5rem; color: var(--cor-secundaria); margin-bottom: 10px;"></i>
+                        <h3>Text to Speech (Canva)</h3>
+                        <p style="color: #aaa; margin: 10px 0;">Narração com IA diretamente no Canva</p>
+                        <p style="color: var(--cor-secundaria);">Aplicativos → Text to Speech</p>
+                    </div>
+                    
+                    <div style="background: rgba(255,255,255,0.05); padding: 25px; border-radius: 10px; text-align: center;">
+                        <i class="fab fa-youtube" style="font-size: 2.5rem; color: var(--cor-youtube); margin-bottom: 10px;"></i>
+                        <h3>YouTube Studio</h3>
+                        <p style="color: #aaa; margin: 10px 0;">Gerenciar vídeos, estatísticas, links</p>
+                        <a href="https://studio.youtube.com" target="_blank" style="color: var(--cor-youtube);">studio.youtube.com →</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SEÇÃO 6: NARRAÇÃO COM IA (Roteiro Pronto) -->
+            <section class="secao">
+                <div class="titulo-secao">
+                    <div class="icone-secao">
+                        <i class="fas fa-microphone-alt"></i>
+                    </div>
+                    <div>
+                        <h2>🎙️ Roteiro para Narração (IA ou Gravação)</h2>
+                        <p style="color: #aaa; margin-top: 5px;">Aprox. 30 segundos</p>
+                    </div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #2a2a3a, #1a1a2a); padding: 30px; border-radius: 10px; border-left: 5px solid var(--cor-destaque);">
+                    <p style="font-size: 1.2rem; font-style: italic; margin-bottom: 20px;">
+                        "Bem-vindo ao nosso canal! Aqui você vai encontrar conteúdos práticos e acessíveis sobre métodos de estudo que realmente funcionam. Nosso objetivo é ajudar você a aprender de forma mais eficiente, melhorar sua organização, aumentar seu foco e potencializar seus resultados acadêmicos e profissionais. Vamos compartilhar técnicas comprovadas, dicas de produtividade e estratégias baseadas em evidências para transformar sua rotina de estudos. Obrigado por assistir e seja muito bem-vindo à nossa comunidade de aprendizado!"
+                    </p>
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 20px;">
+                        <button class="btn-interativo" onclick="copiarRoteiro()">
+                            <i class="fas fa-copy"></i> Copiar roteiro
+                        </button>
+                        <button class="btn-interativo btn-canva" onclick="abrirCanvaNarracao()">
+                            <i class="fas fa-robot"></i> Text to Speech no Canva
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SEÇÃO 7: SIMULADOR DE TIMELINE CANVA -->
+            <section class="secao secao-canva">
+                <div class="titulo-secao">
+                    <div class="icone-secao">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                    <div>
+                        <h2>🎬 Simulador de Timeline no Canva</h2>
+                        <p style="color: #aaa; margin-top: 5px;">Visualização interativa da edição</p>
+                    </div>
+                </div>
+
+                <div class="simulador-canva">
+                    <div class="simulador-header">
+                        <i class="fab fa-canva"></i>
+                        <span>Projeto: Web Jornal - Mobilidade Urbana</span>
+                        <span class="url">1920x1080 • 1min40s</span>
+                    </div>
+                    
+                    <div class="simulador-timeline">
+                        <div class="track">
+                            <div class="track-label">
+                                <i class="fas fa-video" style="color: var(--cor-destaque);"></i> Vídeos
+                            </div>
+                            <div class="track-clips">
+                                <span class="clip"><i class="fas fa-film"></i> Vinheta (5s)</span>
+                                <span class="clip"><i class="fas fa-microphone"></i> Estúdio (15s)</span>
+                                <span class="clip"><i class="fas fa-bus"></i> B-Roll 1 (5s)</span>
+                                <span class="clip"><i class="fas fa-train"></i> B-Roll 2 (5s)</span>
+                                <span class="clip"><i class="fas fa-chart-bar"></i> Gráfico (8s)</span>
+                                <span class="clip"><i class="fas fa-city"></i> Skyline (7s)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="track">
+                            <div class="track-label">
+                                <i class="fas fa-headphones" style="color: var(--cor-secundaria);"></i> Áudio
+                            </div>
+                            <div class="track-clips">
+                                <span class="clip" style="background: var(--cor-secundaria);"><i class="fas fa-music"></i> Intro (10s)</span>
+                                <span class="clip" style="background: var(--cor-secundaria);"><i class="fas fa-microphone-alt"></i> Narração (90s)</span>
+                                <span class="clip" style="background: var(--cor-secundaria);"><i class="fas fa-music"></i> Fundo (100s)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="track">
+                            <div class="track-label">
+                                <i class="fas fa-font" style="color: #f39c12;"></i> Textos
+                            </div>
+                            <div class="track-clips">
+                                <span class="clip" style="background: #f39c12;"><i class="fas fa-heading"></i> Título (5s)</span>
+                                <span class="clip" style="background: #f39c12;"><i class="fas fa-chart-simple"></i> Dados (8s)</span>
+                                <span class="clip" style="background: #f39c12;"><i class="fas fa-clapperboard"></i> Créditos (7s)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SEÇÃO 8: CHECKLIST DA AULA -->
+            <section class="checklist-container">
+                <h2 style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; color: #fff;">
+                    <i class="fas fa-clipboard-check" style="color: var(--cor-sucesso); font-size: 2rem;"></i>
+                    <span>✅ Checklist do Web Jornal</span>
+                </h2>
+
+                <div id="checklist-itens">
+                    <div class="item-checklist">
+                        <input type="checkbox" id="check1" onchange="atualizarProgresso()">
+                        <label for="check1"><strong>1. Criar projeto</strong> no Canva (1920x1080, nome definido)</label>
+                    </div>
+                    <div class="item-checklist">
+                        <input type="checkbox" id="check2" onchange="atualizarProgresso()">
+                        <label for="check2"><strong>2. Vinheta</strong> (vídeo fundo + trilha + texto "WEB JORNAL")</label>
+                    </div>
+                    <div class="item-checklist">
+                        <input type="checkbox" id="check3" onchange="atualizarProgresso()">
+                        <label for="check3"><strong>3. Abertura</strong> (fundo estúdio + narração/texto sobre tema)</label>
+                    </div>
+                    <div class="item-checklist">
+                        <input type="checkbox" id="check4" onchange="atualizarProgresso()">
+                        <label for="check4"><strong>4. B-Roll</strong> (mínimo 4 vídeos de apoio, 4-6s cada)</label>
+                    </div>
+                    <div class="item-checklist">
+                        <input type="checkbox" id="check5" onchange="atualizarProgresso()">
+                        <label for="check5"><strong>5. Dados</strong> (gráfico animado com informações)</label>
+                    </div>
+                    <div class="item-checklist">
+                        <input type="checkbox" id="check6" onchange="atualizarProgresso()">
+                        <label for="check6"><strong>6. Trilha sonora</strong> (contínua, volume baixo, fade in/out)</label>
+                    </div>
+                    <div class="item-checklist">
+                        <input type="checkbox" id="check7" onchange="atualizarProgresso()">
+                        <label for="check7"><strong>7. Encerramento</strong> (vídeo de fundo + créditos)</label>
+                    </div>
+                    <div class="item-checklist">
+                        <input type="checkbox" id="check8" onchange="atualizarProgresso()">
+                        <label for="check8"><strong>8. Exportar</strong> (MP4, 1080p)</label>
+                    </div>
+                    <div class="item-checklist">
+                        <input type="checkbox" id="check9" onchange="atualizarProgresso()">
+                        <label for="check9"><strong>9. Publicar no YouTube</strong> (não listado, configurações corretas)</label>
+                    </div>
+                    <div class="item-checklist">
+                        <input type="checkbox" id="check10" onchange="atualizarProgresso()">
+                        <label for="check10"><strong>10. Compartilhar link</strong> no chat da turma</label>
+                    </div>
+                </div>
+
+                <div class="progresso-aula">
+                    <div id="barra-progresso" class="barra-progresso" style="width: 0%;"></div>
+                </div>
+                <p id="progresso-texto" style="text-align: center; font-weight: 600; margin-top: 10px;">0/10 tarefas concluídas</p>
+
+                <div style="display: flex; justify-content: center; gap: 20px; margin-top: 25px;">
+                    <button class="btn-interativo" onclick="gerarLinkVideo()">
+                        <i class="fas fa-link"></i> Gerar link de exemplo
+                    </button>
+                    <button class="btn-interativo btn-youtube" onclick="abrirYouTube()">
+                        <i class="fab fa-youtube"></i> Abrir YouTube
+                    </button>
+                </div>
+            </section>
+
+            <!-- SEÇÃO 9: PRÓXIMOS PASSOS -->
+            <section style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 15px; text-align: center;">
+                <h2 style="font-size: 2rem; margin-bottom: 15px; color: white;">🎯 RESULTADO FINAL</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 25px; opacity: 0.95;">Web Jornal completo publicado e compartilhado!</p>
+                
+                <div style="display: flex; justify-content: center; gap: 25px; flex-wrap: wrap;">
+                    <div style="background: rgba(255,255,255,0.2); padding: 15px 25px; border-radius: 10px; backdrop-filter: blur(5px);">
+                        <i class="fas fa-clock"></i> 1min30 - 2min30
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 15px 25px; border-radius: 10px; backdrop-filter: blur(5px);">
+                        <i class="fas fa-video"></i> 100% biblioteca Canva
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 15px 25px; border-radius: 10px; backdrop-filter: blur(5px);">
+                        <i class="fab fa-youtube"></i> Não listado
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <span style="background: rgba(255,255,255,0.3); padding: 12px 25px; border-radius: 30px; font-weight: 600;">
+                        📌 Próxima aula: TEMA 05 - Organização e Documentação
+                    </span>
+                </div>
+            </section>
+        </main>
+
+        <!-- RODAPÉ -->
+        <footer style="text-align: center; margin-top: 40px; padding: 30px; background: rgba(0,0,0,0.3); border-radius: 15px; backdrop-filter: blur(5px);">
+            <h3 style="color: white; margin-bottom: 20px;">
+                <i class="fas fa-video"></i> TEMA 04 - Multimídia para Web
+            </h3>
+            
+            <div style="display: flex; justify-content: center; gap: 20px; margin: 20px 0; flex-wrap: wrap;">
+                <a href="index.html" style="color: white; text-decoration: none; padding: 8px 20px; background: rgba(255,255,255,0.1); border-radius: 30px;">
+                    <i class="fas fa-home"></i> Sumário
+                </a>
+                <button onclick="iniciarKahootTema4()" style="background: white; color: #1a1a2e; border: none; padding: 8px 25px; border-radius: 30px; cursor: pointer; font-weight: 600;">
+                    <i class="fas fa-gamepad"></i> Quiz TEMA 04
+                </button>
+            </div>
+
+            <p style="margin-top: 25px; font-size: 0.9rem; opacity: 0.8; color: #aaa;">
+                Projeto Integrador - Agência de Jornalismo Web | Técnico em Desenvolvimento de Sistemas
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // ===== FUNÇÕES INTERATIVAS =====
+        
+        function copiarRoteiro() {
+            const roteiro = `Bem-vindo ao nosso canal! Aqui você vai encontrar conteúdos práticos e acessíveis sobre métodos de estudo que realmente funcionam. Nosso objetivo é ajudar você a aprender de forma mais eficiente, melhorar sua organização, aumentar seu foco e potencializar seus resultados acadêmicos e profissionais. Vamos compartilhar técnicas comprovadas, dicas de produtividade e estratégias baseadas em evidências para transformar sua rotina de estudos. Obrigado por assistir e seja muito bem-vindo à nossa comunidade de aprendizado!`;
+            
+            navigator.clipboard.writeText(roteiro)
+                .then(() => mostrarMensagem('📋 Roteiro copiado! Cole no Canva (Text to Speech)', 'success'))
+                .catch(() => mostrarMensagem('❌ Erro ao copiar', 'error'));
+        }
+
+        function abrirCanvaNarracao() {
+            window.open('https://canva.com', '_blank');
+            mostrarMensagem('🎬 Abrindo Canva... Vá em "Aplicativos" → "Text to Speech"', 'info');
+        }
+
+        function abrirYouTube() {
+            window.open('https://youtube.com', '_blank');
+            mostrarMensagem('📤 Abrindo YouTube... Lembre-se: configurar como NÃO LISTADO', 'info');
+        }
+
+        function gerarLinkVideo() {
+            const nomeAgencia = prompt("Digite o nome da sua agência:", "Agência Escolar");
+            if (nomeAgencia) {
+                const link = `https://youtube.com/watch?v=exemplo-${Math.random().toString(36).substring(7)}`;
+                mostrarMensagem(`🔗 Link simulado: ${link} (Cole no chat da turma!)`, 'success');
+            }
+        }
+
+        function atualizarProgresso() {
+            const checkboxes = document.querySelectorAll('#checklist-itens input[type="checkbox"]');
+            const total = checkboxes.length;
+            let marcados = 0;
+
+            checkboxes.forEach(check => {
+                if (check.checked) marcados++;
+            });
+
+            const progresso = (marcados / total) * 100;
+            document.getElementById('barra-progresso').style.width = `${progresso}%`;
+            document.getElementById('progresso-texto').textContent = `${marcados}/${total} tarefas concluídas`;
+
+            if (marcados === total) {
+                mostrarMensagem('🎉 PARABÉNS! Web Jornal completo! Compartilhe o link!', 'success');
+            }
+        }
+
+        function iniciarKahootTema4() {
+            const perguntas = [
+                "Qual a duração ideal de um Web Jornal?",
+                "O que são imagens B-Roll?",
+                "Qual volume ideal para trilha de fundo?",
+                "O que significa 'Não listado' no YouTube?",
+                "Onde encontrar gráficos animados no Canva?",
+                "Qual transição é mais adequada para jornalismo?",
+                "O que fazer se o YouTube avisar 'Não afeta seu canal'?"
+            ];
+
+            const perguntaAleatoria = perguntas[Math.floor(Math.random() * perguntas.length)];
+            
+            const resposta = confirm(`🎯 QUIZ RÁPIDO - TEMA 04:\n\n"${perguntaAleatoria}"\n\nClique em OK para ver a resposta.`);
+            
+            if (resposta) {
+                const respostas = {
+                    "Qual a duração ideal de um Web Jornal?": "1min30 a 2min30",
+                    "O que são imagens B-Roll?": "Imagens de apoio que ilustram a narração (cortes rápidos)",
+                    "Qual volume ideal para trilha de fundo?": "20-30% (não competir com a narração)",
+                    "O que significa 'Não listado' no YouTube?": "Vídeo visível apenas para quem tem o link (não aparece em buscas)",
+                    "Onde encontrar gráficos animados no Canva?": "Elementos → Gráficos",
+                    "Qual transição é mais adequada para jornalismo?": "Dissolver ou Fade (simples, discreta)",
+                    "O que fazer se o YouTube avisar 'Não afeta seu canal'?": "Publicar normalmente, é apenas Content ID identificando a música"
+                };
+                
+                alert(`✅ RESPOSTA:\n\n${respostas[perguntaAleatoria]}`);
+            }
+        }
+
+        function mostrarMensagem(texto, tipo) {
+            const mensagem = document.createElement('div');
+            mensagem.className = 'mensagem-flutuante';
+            mensagem.textContent = texto;
+            mensagem.style.position = 'fixed';
+            mensagem.style.bottom = '20px';
+            mensagem.style.right = '20px';
+            mensagem.style.padding = '15px 25px';
+            mensagem.style.borderRadius = '30px';
+            mensagem.style.color = 'white';
+            mensagem.style.zIndex = '9999';
+            mensagem.style.boxShadow = '0 10px 30px rgba(0,0,0,0.3)';
+            mensagem.style.animation = 'slideIn 0.3s ease';
+            mensagem.style.fontWeight = '600';
+
+            if (tipo === 'success') {
+                mensagem.style.background = 'linear-gradient(90deg, #27ae60, #2ecc71)';
+            } else if (tipo === 'error') {
+                mensagem.style.background = 'linear-gradient(90deg, #e74c3c, #c0392b)';
+            } else {
+                mensagem.style.background = 'linear-gradient(90deg, #3498db, #2980b9)';
+            }
+
+            document.body.appendChild(mensagem);
+
+            setTimeout(() => {
+                mensagem.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => mensagem.remove(), 300);
+            }, 4000);
+        }
+
+        // Carregar progresso salvo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Adicionar animações CSS
+            if (!document.querySelector('#animacoes-css')) {
+                const style = document.createElement('style');
+                style.id = 'animacoes-css';
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100px); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOut {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100px); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        });
+    </script>
+</body>
+</html>
