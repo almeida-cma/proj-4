@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vídeo Incorporado - Erro 153 Corrigido</title>
+    <style>
+        /* (Estilos mantidos iguais ao exemplo anterior) */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            padding: 30px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 2em;
+        }
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .info-box {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+        .info-box h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        .info-box p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        .info-box small {
+            color: #999;
+            display: block;
+            text-align: right;
+            font-size: 0.85em;
+        }
+        .note {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 8px;
+            color: #856404;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📹 Vídeo Incorporado (Correção para Erro 153)</h1>
+
+        <div class="video-wrapper">
+            <!-- CORREÇÃO: Uso do domínio youtube-nocookie.com + política de referrer -->
+            <iframe 
+                src="https://www.youtube-nocookie.com/embed/A8_PR72p4Ds" 
+                title="YouTube video player" 
+                referrerpolicy="strict-origin-when-cross-origin"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowfullscreen>
+            </iframe>
+        </div>
+
+        <div class="info-box">
+            <h3>ℹ️ Sobre o Erro 153 e a Correção</h3>
+            <p>O erro 153 acontece porque o YouTube passou a exigir um cabeçalho <strong>"Referer"</strong> válido para reproduzir vídeos incorporados [citation:5][citation:6]. Quando você abre uma página diretamente do seu computador (arquivo .html local), o navegador não envia essa informação, causando o bloqueio.</p>
+            <p><strong>O que fizemos para corrigir:</strong></p>
+            <ul style="margin-left: 20px; color: #666;">
+                <li>Usamos o domínio <strong>youtube-nocookie.com</strong>, que é recomendado para incorporações e lida melhor com privacidade [citation:2][citation:8].</li>
+                <li>Adicionamos o atributo <strong>referrerpolicy="strict-origin-when-cross-origin"</strong> ao iframe, que instrui o navegador a enviar a origem da requisição [citation:4][citation:8].</li>
+            </ul>
+            <small>Visualizações: 1 • Publicado em 2 de março de 2026</small>
+        </div>
+
+        <div class="note">
+            <strong>📌 Importante:</strong> Esta correção deve fazer o vídeo funcionar mesmo em arquivos locais. Se o problema persistir, pode ser uma configuração muito restritiva no seu navegador (como extensões de privacidade que bloqueiam cabeçalhos Referer) [citation:8]. Experimente testar em uma janela anônima ou desabilitar extensões temporariamente.
+        </div>
+    </div>
+</body>
+</html>
