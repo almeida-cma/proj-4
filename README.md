@@ -8,7 +8,6 @@ agencia-noticias/
 │ ├── formatura.jpg
 │ ├── feira-ciencias.jpg
 │ └── futebol.jpg
-├── AQUI ...
 ├── noticias/
 │ ├── formatura.html
 │ ├── feira-ciencias.html
