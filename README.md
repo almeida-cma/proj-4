@@ -1,6 +1,5 @@
 # proj-4
 Multimídia para Web: Vídeo e Podcast
-
 ```
 agencia-noticias/
 ├── index.html
