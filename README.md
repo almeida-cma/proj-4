@@ -4,10 +4,6 @@ Multimídia para Web: Vídeo e Podcast
 ```
 agencia-noticias/
 ├── index.html
-├── css/
-│ └── estilo.css
-├── js/
-│ └── script.js
 ├── imagens/
 │ ├── formatura.jpg
 │ ├── feira-ciencias.jpg
