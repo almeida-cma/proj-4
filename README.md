@@ -13,7 +13,6 @@ agencia-noticias/
 │ └── futebol.jpg
 ├── noticias/
 │ ├── formatura.html
-│ ├── feira-ciencias.html
 │ └── futebol.html
 └── README.md
 ```
