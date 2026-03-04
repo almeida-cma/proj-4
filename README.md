@@ -1,6 +1,7 @@
 # proj-4
 Multimídia para Web: Vídeo e Podcast
 
+```
 agencia-noticias/
 ├── index.html
 ├── help.html
@@ -9,3 +10,4 @@ agencia-noticias/
 │ ├── feira-ciencias.jpg
 │ └── futebol.jpg
 └── README.md
+```
